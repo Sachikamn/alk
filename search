@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALC Dictionary</title>
+<style>
+.tabcontent {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<textarea id="searchInput" rows="4" cols="50"></textarea><br>
+<button onclick="search()">Search</button>
+
+<div id="tabs">
+  <!-- タブのタイトル -->
+</div>
+
+<script>
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+function search() {
+  var input = document.getElementById("searchInput").value.split('\n').filter(function(el) {
+    return el.trim().length > 0;
+  });
+  var tabs = document.getElementById("tabs");
+  tabs.innerHTML = '';
+  input.forEach(function(word, index) {
+    var tabName = "word" + (index + 1);
+    tabs.innerHTML += '<button class="tablink" onclick="openTab(event, \'' + tabName + '\')">Word ' + (index + 1) + '</button>';
+    tabs.innerHTML += '<div id="' + tabName + '" class="tabcontent"></div>';
+    var url = "https://eow.alc.co.jp/search?q=" + encodeURIComponent(word);
+    window.open(url, tabName);
+  });
+}
+</script>
+
+</body>
+</html>
